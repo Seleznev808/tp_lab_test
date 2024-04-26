@@ -3,7 +3,12 @@ import time
 
 from playwright.async_api import async_playwright
 
-from config import SCREENSHOT_SIZE
+from config import (
+    SCREENSHOT_SIZE,
+    SCREENSHOT_SLEEP,
+    SCREENSHOT_TIMEOUT,
+    EXECUTION_TIME_ROUND
+)
 from logger import logger
 
 
@@ -19,8 +24,11 @@ async def get_screenshot(
 
         try:
             await page.goto(url)
-            await asyncio.sleep(0.5)
-            await page.screenshot(path=screenshot_path, timeout=5000)
+            await asyncio.sleep(SCREENSHOT_SLEEP)
+            await page.screenshot(
+                path=screenshot_path,
+                timeout=SCREENSHOT_TIMEOUT
+            )
         except Exception as e:
             logger.exception(e)
             return None, None
@@ -30,6 +38,9 @@ async def get_screenshot(
         title = await page.title()
         await browser.close()
 
-        execution_time = round(end_time - start_time, 2)
+        execution_time = round(
+            end_time - start_time,
+            EXECUTION_TIME_ROUND
+        )
 
     return title, execution_time

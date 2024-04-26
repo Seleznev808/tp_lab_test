@@ -12,6 +12,10 @@ SCREENSHOT_SIZE = {
     'width': int(os.getenv('SCREENSHOT_WIDTH')),
     'height': int(os.getenv('SCREENSHOT_HEIGHT'))
 }
+SCREENSHOT_TIMEOUT = int(os.getenv('SCREENSHOT_TIMEOUT'))
+SCREENSHOT_SLEEP = float(os.getenv('SCREENSHOT_SLEEP'))
+
+EXECUTION_TIME_ROUND = int(os.getenv('EXECUTION_TIME_ROUND'))
 
 DATE_FORMAT = os.getenv('DATE_FORMAT')
 
