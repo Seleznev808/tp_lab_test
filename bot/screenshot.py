@@ -9,12 +9,11 @@ from config import (
     SCREENSHOT_TIMEOUT,
     EXECUTION_TIME_ROUND
 )
+from exceptions import InvalidURLError
 from logger import logger
 
 
-async def get_screenshot(
-    url: str, screenshot_path: str
-) -> tuple[str | None, float | None]:
+async def get_screenshot(url: str, screenshot_path: str) -> tuple[str, float]:
     async with async_playwright() as pw:
         browser = await pw.chromium.launch()
         page = await browser.new_page()
@@ -31,7 +30,7 @@ async def get_screenshot(
             )
         except Exception as e:
             logger.exception(e)
-            return None, None
+            raise InvalidURLError()
 
         end_time = time.perf_counter()
 

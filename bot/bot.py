@@ -12,6 +12,7 @@ from telegram.ext import (
 import messages as messages
 from config import DEFAULT_LANGUAGE, TOKEN
 from db import insert
+from exceptions import InvalidURLError
 from keyboards import (
     get_choose_language_keyboard,
     get_more_keyboard,
@@ -68,8 +69,9 @@ async def send_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         return await temp_message.edit_text(messages.error_url[language])
     request_info = get_request_info(url, update)
     screenshot_path = get_screenshot_path(url, update)
-    title, execution_time = await get_screenshot(url, screenshot_path)
-    if not title or not execution_time:
+    try:
+        title, execution_time = await get_screenshot(url, screenshot_path)
+    except InvalidURLError:
         return await temp_message.edit_text(messages.error_url[language])
     await insert(request_info, screenshot_path, execution_time)
     await temp_message.delete()
